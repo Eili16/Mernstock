@@ -1,5 +1,6 @@
 const Products = require('../models/product');
-
+const ErrorHandler = require('../utils/errorHandler');
+const catchAsyncError = require('../middleware/catchAsycnError');
 
 
 //Get all Products
@@ -22,8 +23,8 @@ exports.getProducts = async (req, res, next) => {
 };
 
 // Add New Product
-exports.newProducts = async (req, res, next) => {
-    try {
+exports.newProducts = catchAsyncError (async (req, res, next) => {
+    
         const product = await Products.create(req.body);
     
         res.status(201).json({
@@ -31,50 +32,29 @@ exports.newProducts = async (req, res, next) => {
             message: 'Product created successfully',
             product
         });
-    } catch (error) {
-        console.error(error);
-        // Check for specific errors (e.g., validation errors)
-        if (error.name === 'ValidationError') {
-            return res.status(400).json({
-                success: false,
-                message: error.message
-            });
-        }
-        // Handle other types of errors
-        res.status(500).json({
-            success: false,
-            message: 'Internal Server Error'
-        });
-    }
-};
+})
 
 
 // Get single product details 
-exports.getSingleProduct = async (req, res, next) => {
+exports.getSingleProduct =  catchAsyncError (async (req, res, next) => {
     try {
         const product = await Products.findById(req.params.id);
 
         if (!product) {
-            return res.status(404).json({
-                success: false,
-                message: 'Product not found'
-            });
+            throw new ErrorHandler('Product not found', 404);
         }
+
         res.status(200).json({
             success: true,
             product
         });
     } catch (error) {
-        console.error(error); // Log the error for debugging
-        return res.status(500).json({
-            success: false,
-            message: 'Internal Server Error'
-        });
+        next(error); // Pass the error to the next middleware (error handler)
     }
-}
+});
 
 // Update Product by their ID
-exports.updateProduct = async (req, res, next) => {
+exports.updateProduct = catchAsyncError(async (req, res, next) => {
     try {
         const product = await Products.findByIdAndUpdate(req.params.id, req.body, {
             new: true,
@@ -82,11 +62,9 @@ exports.updateProduct = async (req, res, next) => {
         });
 
         if (!product) {
-            return res.status(404).json({
-                success: false,
-                message: 'Product not found'
-            });
+            throw new ErrorHandler('Product not found', 404);
         }
+
         res.status(200).json({
             success: true,
             product
@@ -98,18 +76,16 @@ exports.updateProduct = async (req, res, next) => {
             message: 'Internal Server Error'
         });
     }
-}
+});
+
 
 // Delete Product by their ID
-exports.deleteProduct = async (req, res, next) => {
+exports.deleteProduct = catchAsyncError (async (req, res, next) => {
     try {
         const product = await Products.findByIdAndDelete(req.params.id);
 
         if (!product) {
-            return res.status(404).json({
-                success: false,
-                message: 'Product not found'
-            });
+            throw new ErrorHandler('Product not found', 404);
         }
         res.status(200).json({
             success: true,
@@ -123,4 +99,4 @@ exports.deleteProduct = async (req, res, next) => {
             message: 'Internal Server Error'
         });
     }
-}
+});
