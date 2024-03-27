@@ -1,9 +1,8 @@
-const Product = require('../models/product');
+const Products = require('../models/product');
 
-// Create a new Product
 exports.newProducts = async (req, res, next) => {
     try {
-        const product = await Product.create(req.body);
+        const product = await Products.create(req.body);
     
         res.status(201).json({
             success: true,
@@ -27,9 +26,20 @@ exports.newProducts = async (req, res, next) => {
     }
 };
 
-exports.getProducts = (req, res, next) => {
-    res.status(200).json({
-        success:true,
-        message: 'This route will show all products database.'
-    })
-}
+exports.getProducts = async (req, res, next) => {
+    try {
+        const products = await Products.find(); // Query all products from the database
+    
+        res.status(200).json({
+            success: true,
+            count: products.length,
+            products
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: 'Internal Server Error'
+        });
+    }
+};
