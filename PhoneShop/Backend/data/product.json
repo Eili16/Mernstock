@@ -1,0 +1,18 @@
+[
+    {
+        "name": "Samsung Galaxy A55 5G",
+        "price": 240000,
+        "description": "As of my last update in January 2022, there's no specific information available about a Samsung A55 5G model. However, I can provide you with a general description of what features and specifications one might expect from a mid-range Samsung smartphone like the Samsung A55 5G, based on typical trends in the mobile industry",
+        "ratings": 4.5,
+        "image": [{
+            "public_id": "Cellphone/nxz89nnwgnmugwdgsmgu",
+            "url": "https://res.cloudinary.com/dxxmsxnpf/image/upload/v1711529238/Cellphone/nxz89nnwgnmugwdgsmgu.jpg"
+        }],
+        "category": "Smartphones",
+        "seller": "Samsung Philipines",
+        "stock": "500",
+        "numOfReviews": "32",
+        "reviews":[]
+     
+    }
+]

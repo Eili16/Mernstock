@@ -58,6 +58,30 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Please Enter product stock'],
         maxLength: [5, 'Please Enter product stock']
+    },
+    numOfReviews: {
+        type: Number,
+        default: 0
+    },
+    reviews: [
+        {
+            name: {
+                type: String,
+                required: true,
+            },
+            rating: {
+                type: Number,
+                required: true,
+            },
+            comment: {
+                type: String,
+                required: true,
+            }
+        }
+    ],
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 })
 
